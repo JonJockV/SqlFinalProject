@@ -1,0 +1,14 @@
+INSERT INTO developer (developer_name) VALUES ('idoz and phops');
+INSERT INTO developer (developer_name) VALUES ('Irational Games');
+INSERT INTO developer (developer_name) VALUES ('Ninja Kiwi');
+INSERT INTO developer (developer_name) VALUES ('FromSoftware Inc.');
+INSERT INTO developer (developer_name) VALUES ('Acid Nerve');
+INSERT INTO developer (developer_name) VALUES ('Ninja Theory');
+INSERT INTO developer (developer_name) VALUES ('Digital Sun');
+INSERT INTO developer (developer_name) VALUES ('Mads Skovgaard');
+INSERT INTO developer (developer_name) VALUES ('Gunfire Games');
+INSERT INTO developer (developer_name) VALUES ('Heart Machine');
+INSERT INTO developer (developer_name) VALUES ('Re-Logic');
+INSERT INTO developer (developer_name) VALUES ('TML Team');
+INSERT INTO developer (developer_name) VALUES ('DONTNOD Entertainment');
+INSERT INTO developer (developer_name) VALUES ('Sad Owl Studios');
