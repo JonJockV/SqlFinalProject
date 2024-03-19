@@ -25,11 +25,12 @@ public class GameData {
 		gameName = game.getGameName();
 		gameGenre = game.getGameGenre();
 		gameLocation = game.getGameLocation();
+		developer = new GameDeveloper(game.getDeveloper());
 	}
 	
 	@Data
 	@NoArgsConstructor
-	public static class GameDeveloper {
+	public static class GameDeveloper{
 		private Long developerId;
 		private String developerName;
 		

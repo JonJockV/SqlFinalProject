@@ -1,7 +1,11 @@
 package game.database.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +24,19 @@ public class GameController {
 	@Autowired
 	private GameService gameService;
 	
-	@PostMapping("/game")
+	@PostMapping("/game/{developerId}")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public GameData insertGame(@RequestBody GameData gameData) {
-		log.info("Adding game {}", gameData);
-		return gameService.saveGame(gameData);
+	public GameData insertGame(@PathVariable Long developerId, @RequestBody GameData gameData) {
+		log.info("Adding game {} with developer {}", gameData, developerId);
+		return gameService.saveGame(gameData, developerId);
+	}
+	
+	@DeleteMapping("/game/{gameId}")
+	public Map<String, String> deleteGameById(@PathVariable Long gameId) {
+		log.info("Deleting game with ID={}", gameId);
+		
+		gameService.deleteGameById(gameId);
+		
+		return Map.of("message", "Deletion of game with ID=" + gameId + " was successful");
 	}
 }

@@ -18,8 +18,8 @@ public class Developer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long developerId;
-	private String developerName;
+	protected Long developerId;
+	protected String developerName;
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
