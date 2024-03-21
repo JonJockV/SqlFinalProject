@@ -3,6 +3,7 @@ package game.database.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,13 +29,13 @@ public class Game {
 
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "developer_id", nullable = false)
 	private Developer developer;
 
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "game_player", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "player_id"))
 	private Set<Player> players = new HashSet<Player>();
 }

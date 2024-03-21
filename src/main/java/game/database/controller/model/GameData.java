@@ -26,6 +26,10 @@ public class GameData {
 		gameGenre = game.getGameGenre();
 		gameLocation = game.getGameLocation();
 		developer = new GameDeveloper(game.getDeveloper());
+		
+		for(Player player : game.getPlayers()) {
+			gamePlayers.add(new GamePlayer(player));
+		}
 	}
 	
 	@Data

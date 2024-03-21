@@ -3,6 +3,7 @@ package game.database.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,6 @@ public class Player {
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany(mappedBy = "players")
+	@ManyToMany(mappedBy = "players", cascade = CascadeType.PERSIST)
 	private Set<Game> games = new HashSet<Game>();
 }

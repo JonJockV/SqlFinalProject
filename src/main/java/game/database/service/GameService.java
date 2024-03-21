@@ -1,16 +1,22 @@
 package game.database.service;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import game.database.controller.model.GameData;
+import game.database.controller.model.GameData.GamePlayer;
 import game.database.dao.DeveloperDao;
 import game.database.dao.GameDao;
+import game.database.dao.PlayerDao;
 import game.database.entity.Developer;
 import game.database.entity.Game;
+import game.database.entity.Player;
 
 @Service
 public class GameService {
@@ -20,21 +26,24 @@ public class GameService {
 
 	@Autowired
 	private DeveloperDao developerDao;
-	
+
+	@Autowired
+	private PlayerDao playerDao;
+
 	public GameData saveGame(GameData gameData, Long developerId) {
-		
+
 		Long gameId = gameData.getGameId();
 		Developer developer = findDeveloperById(developerId);
 		Game game = findOrCreateGame(gameId);
-		copyGameFields(game, gameData, developer);
-		
+		copyGameFields(game, gameData);
+
 		game.setDeveloper(developer);
 		developer.getGames().add(game);
-		
+
 		return new GameData(gameDao.save(game));
 	}
 
-	private void copyGameFields(Game game, GameData gameData, Developer developer) {
+	private void copyGameFields(Game game, GameData gameData) {
 		game.setGameId(gameData.getGameId());
 		game.setGameName(gameData.getGameName());
 		game.setGameGenre(gameData.getGameGenre());
@@ -67,4 +76,52 @@ public class GameService {
 		gameDao.delete(game);
 	}
 
+	public List<GameData> getAllGames() {
+		List<Game> games = gameDao.findAll();
+		List<GameData> gameData = new LinkedList<>();
+
+		for (Game game : games) {
+			GameData gd = new GameData(game);
+
+			gameData.add(gd);
+		}
+		return gameData;
+	}
+
+	public GameData getGameById(Long gameId) {
+		return new GameData(findGameById(gameId));
+	}
+
+	@Transactional(readOnly = false)
+	public GamePlayer savePlayer(Long gameId, GamePlayer gamePlayer) {
+		Game game = findGameById(gameId);
+		Player player = findOrCreatePlayer(gamePlayer.getPlayerId(), gameId);
+		copyPlayerFields(player, gamePlayer);
+		player.getGames().add(game);
+		game.getPlayers().add(player);
+		return new GamePlayer(playerDao.save(player));
+	}
+
+	private void copyPlayerFields(Player player, GamePlayer gamePlayer) {
+		player.setPlayerId(gamePlayer.getPlayerId());
+		player.setPlayerName(gamePlayer.getPlayerName());
+		player.setPlayerAge(gamePlayer.getPlayerAge());
+		player.setPlayerEmail(gamePlayer.getPlayerEmail());
+	}
+
+	private Player findOrCreatePlayer(Long playerId, Long gameId) {
+		Player player;
+
+		if (Objects.isNull(playerId)) {
+			player = new Player();
+		} else {
+			player = findPlayerById(playerId);
+		}
+		return player;
+	}
+
+	public Player findPlayerById(Long playerId) {
+		return playerDao.findById(playerId)
+				.orElseThrow(() -> new NoSuchElementException("Player with ID=" + playerId + " was not found."));
+	}
 }
