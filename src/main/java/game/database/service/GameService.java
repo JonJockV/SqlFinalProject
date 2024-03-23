@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import game.database.controller.model.GameData;
+import game.database.controller.model.GameData.GameDeveloper;
 import game.database.controller.model.GameData.GamePlayer;
 import game.database.dao.DeveloperDao;
 import game.database.dao.GameDao;
@@ -123,5 +124,20 @@ public class GameService {
 	public Player findPlayerById(Long playerId) {
 		return playerDao.findById(playerId)
 				.orElseThrow(() -> new NoSuchElementException("Player with ID=" + playerId + " was not found."));
+	}
+
+	@Transactional(readOnly = false)
+	public List<GameDeveloper> getAllDevelopers() {
+		List<Developer> developers = developerDao.findAll();
+		List<GameDeveloper> response = new LinkedList<>();
+		
+		for(Developer developer : developers) {
+			response.add(new GameDeveloper(developer));
+		}
+		return response;
+	}
+
+	public GameDeveloper getDeveloperById(Long developerId) {
+		return new GameDeveloper(findDeveloperById(developerId));
 	}
 }

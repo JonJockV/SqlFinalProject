@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import game.database.controller.model.GameData;
+import game.database.controller.model.GameData.GameDeveloper;
 import game.database.controller.model.GameData.GamePlayer;
 import game.database.service.GameService;
 import lombok.extern.slf4j.Slf4j;
@@ -47,12 +48,14 @@ public class GameController {
 	//Retrieves all games
 	@GetMapping("/")
 	public List<GameData> retrieveAllGames(){
+		log.info("Retrieving all games");
 		return gameService.getAllGames();
 	}
 	
 	//Retrieves game based off input ID
 	@GetMapping("/{gameId}")
 	public GameData retrieveGameById(@PathVariable Long gameId) {
+		log.info("Retrieving game with ID={}", gameId);
 		return gameService.getGameById(gameId);
 	}
 	
@@ -79,5 +82,18 @@ public class GameController {
 	public GamePlayer createPlayer(@PathVariable Long gameId, @RequestBody GamePlayer gamePlayer) {
 		log.info("Adding player");
 		return gameService.savePlayer(gameId, gamePlayer);
+	}
+	
+	//Get all developers
+	@GetMapping("/developer")
+	public List<GameDeveloper> retrieveAllDevelopers() {
+		log.info("Retrieving all developers");
+		return gameService.getAllDevelopers();
+	}
+	
+	@GetMapping("/developer/{developerId}")
+	public GameDeveloper retrieveDeveloperById(@PathVariable Long developerId) {
+		log.info("Retrieving developer with ID=", developerId);
+		return gameService.getDeveloperById(developerId);
 	}
 }
